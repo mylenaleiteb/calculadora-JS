@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora em HTML, CSS e JS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .fundo {
+            background-image: url('bgimage.png');
+            height: 100vh;
+            color: antiquewhite;
+            background-size: cover;
+            text-align: center;
+        }
+        .calculadora {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.5);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+            padding: 15px;
+        }
+        .botao {
+            width: 50px;
+            height: 50px;
+            font: 25px;
+            cursor: pointer;
+            margin: 3px;
+            border-radius: 5px;
+        }
+        .botao:hover {
+            background-color: rgb(31, 31, 31);
+        }
+
+        #resultado {
+            width: 225px;
+            height: 40px;
+            margin: solid 5px black;
+            background-color: aliceblue;
+            font-size: 20px;
+            color: black;
+            text-align: right;
+            padding: 5px;
+        }
+        
+        .footer {
+            position: absolute;
+            color: black;
+            top: 95%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="fundo">
+        <div class="calculadora">
+            <h1>Calculadora</h1>
+            <p id="resultado"> </p>
+            <table> 
+                <tr>
+                    <td colspan="2"><button class="botao" style="width: 114px;" onclick="resultado()">=</button></td>
+                    <td ><button class="botao" onclick="insert('/')">/</button></td>
+                    <td ><button class="botao" onclick="insert('*')">*</button></td>
+                </tr>
+                <tr>
+                    <td ><button class="botao" onclick="insert('7')">7</button></td>
+                    <td ><button class="botao" onclick="insert('8')">8</button></td>
+                    <td ><button class="botao" onclick="insert('9')">9</button></td>
+                    <td ><button class="botao" onclick="insert('-')">-</button></td>
+                </tr>
+                    <tr>
+                    <td ><button class="botao" onclick="insert('4')">4</button></td>
+                    <td ><button class="botao" onclick="insert('5')">5</button></td>
+                    <td ><button class="botao" onclick="insert('6')">6</button></td>
+                    <td ><button class="botao" onclick="insert('+')">+</button></td>
+                </tr>
+                    <tr>
+                    <td ><button class="botao" onclick="insert('1')">1</button></td>
+                    <td ><button class="botao" onclick="insert('2')">2</button></td>
+                    <td ><button class="botao" onclick="insert('3')">3</button></td>
+                    <td rowspan="2"><button class="botao" style="height: 103px;" onclick="limpar()">C</button></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button class="botao" style="width: 110px;" onclick="insert('0')">0</button></td>
+                    <td ><button class="botao" onclick="back()"> < </button></td>
+                </tr>
+            </table>
+        </div>
+            <p class="footer"> Feito com &#x1F496; por Mylena </p>
+    </div>
+
+    <script>
+        function insert(num) {
+            var numero = document.getElementById('resultado').innerHTML;
+
+            //Verificar se o último caracter é um operador e se um operador está duplicado:
+            var ultimoCaracter = numero.slice(-1);
+            if (['+','-','/','*'].includes(ultimoCaracter) && ['+','-','*','/'].includes(num)) {
+                return;
+            }
+
+            document.getElementById('resultado').innerHTML = numero + num;
+        }
+
+        function limpar() {
+            document.getElementById('resultado').innerHTML = 0;
+        }
+
+        function back() {
+            var voltarUm = document.getElementById('resultado').innerHTML;
+            document.getElementById('resultado').innerHTML = voltarUm.substring(0, voltarUm.length -1);
+        }
+
+        function resultado() {
+            var numero = document.getElementById('resultado').innerHTML;
+            var calculo;
+            
+            // Verifica se a expressão contém uma divisão por zero
+            if (numero.includes('/0')) {
+                //alert('Erro: Divisão por zero!');
+                document.getElementById('resultado').innerHTML = "Não é possível dividir por zero";
+                setTimeout(function() {
+                    limpar();} , 2000);
+                    return;}
+
+            try {
+                calculo = eval(numero);
+                var resultadoElement = document.getElementById('resultado');
+
+                if(calculo > 0) {
+                    resultadoElement.style.color = 'blue';
+                } else if(calculo < 0) {
+                    resultadoElement.style.color = 'red';
+                } else if (calculo == 0) {
+                    resultadoElement.style.color = 'black';
+                }
+
+                resultadoElement.innerHTML = calculo;
+            
+            } catch (error){
+                return;
+            }
+            }
+
+        
+    </script>
+</body>
+</html>
